@@ -479,7 +479,23 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
+    .search-bar-upgraded {
+        flex-direction: column;
+        border-radius: 20px;
+        padding: 20px;
+    }
+
+    .search-field-upgraded:not(:last-child)::after {
+        display: none;
+    }
+
+    .search-button-upgraded {
+        width: 100%;
+        justify-content: center;
+        margin: 10px 0 0 0;
+    }
+
     .destinations-grid {
         grid-template-columns: repeat(2, 1fr);
     }

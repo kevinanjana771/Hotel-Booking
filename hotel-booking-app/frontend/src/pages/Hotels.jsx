@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
-// Import images
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import HotelCard from '../components/HotelCard';
+import './Hotels.css';
+
+// Import hotel images
 import CinnamonGrand from '../images/hotel_img/Cinnamon Grand Colombo.jpg';
 import Shangrila from '../images/hotel_img/Shangri-La Colombo.jpg';
-import GalleFace from '../images/hotel_img/GalleFace.jpeg';
+import GallFace from '../images/hotel_img/GalleFace.jpeg';
 import Kingsbury from '../images/hotel_img/Kingsbury.jpg';
 import CinnamonRed from '../images/hotel_img/CinnamonRed.jpg';
 import Kandalama from '../images/hotel_img/Kandalama.jpg';
@@ -12,200 +17,180 @@ import Ella98Acres from '../images/hotel_img/Ella98Acres.jpg';
 import EarlsRegency from '../images/hotel_img/EarlsRegency.jpg';
 import ShangriLaHambantota from '../images/hotel_img/ShangriLaHambantota.jpg';
 
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import './Hotels.css';
-
-// Helper function to normalize names (removes spaces and hyphens) for accurate matching
-const normalizeName = (name) => name ? name.replace(/[\s-]/g, '').toLowerCase() : '';
-
+// Map hotel ID → image
 const hotelImages = {
-  "cinnamongrandcolombo": CinnamonGrand,
-  "shangrilacolombo": Shangrila,
-  "galleface": GalleFace,
-  "kingsbury": Kingsbury,
-  "cinnamonred": CinnamonRed,
-  "kandalama": Kandalama,
-  "jetwingblue": JetwingBlue,
-  "amarigalle": AmariGalle,
-  "ella98acres": Ella98Acres,
-  "earlsregency": EarlsRegency,
-  "shangrilahambantota": ShangriLaHambantota,
-};
-
-// Function to get image based on name
-const getHotelImage = (name, id) => {
-  const cleanName = normalizeName(name);
-  return hotelImages[cleanName];
+  9: CinnamonGrand,
+  10: Shangrila,
+  11: GallFace,
+  12: Kingsbury,
+  13: CinnamonRed,
+  14: Kandalama,
+  15: JetwingBlue,
+  16: AmariGalle,
+  17: Ella98Acres,
+  18: EarlsRegency,
+  19: ShangriLaHambantota
 };
 
 const Hotels = () => {
-    const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useState({
-        location: ''
-    });
-    // State to store all fetched hotels
-    const [allHotels, setAllHotels] = useState([]);
-    // State to store hotels currently displayed (filtered)
-    const [hotels, setHotels] = useState([]);
-    const [loading, setLoading] = useState(true);
-    // State for search suggestions
-    const [suggestions, setSuggestions] = useState([]);
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchHotels = async () => {
-            try {
-                setLoading(true);
-                const response = await axios.get('http://localhost:5001/api/manager/hotels');
+  const [searchParams, setSearchParams] = useState({
+    location: ''
+  });
 
-                const mappedHotels = response.data.map(h => ({
-                    id: h.h_id,
-                    title: h.h_name,
-                    location: h.h_location,
-                    price: h.base_price,
-                    rating: 4.8,
-                    // Use the helper function to find the correct image
-                    image: getHotelImage(h.h_name, h.h_id)
-                }));
+  const [allHotels, setAllHotels] = useState([]);
+  const [hotels, setHotels] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [suggestions, setSuggestions] = useState([]);
 
-                setAllHotels(mappedHotels);
-                setHotels(mappedHotels);
-            } catch (error) {
-                console.error("Error fetching hotels:", error);
-                alert("Failed to load hotels.");
-            } finally {
-                setLoading(false);
-            }
-        };
+  // Fetch hotels
+  useEffect(() => {
+    const fetchHotels = async () => {
+      try {
+        setLoading(true);
 
-        fetchHotels();
-    }, []);
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-        // Filter from the original list, not the current state
-        const filtered = allHotels.filter(h =>
-            h.location.toLowerCase().includes(searchParams.location.toLowerCase())
+        const response = await axios.get(
+          'http://localhost:5001/api/manager/hotels'
         );
-        setHotels(filtered);
-        setSuggestions([]);
+
+        const mappedHotels = response.data.map((h) => ({
+          id: h.h_id,
+          title: h.h_name,
+          location: h.h_location,
+          price: h.base_price,
+          rating: 4.8,
+          image: hotelImages[h.h_id]
+        }));
+
+        setAllHotels(mappedHotels);
+        setHotels(mappedHotels);
+      } catch (error) {
+        console.error('Error fetching hotels:', error);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    const handleInputChange = (e) => {
-        const value = e.target.value;
-        setSearchParams({ ...searchParams, location: value });
-        
-        // Show suggestions if input is not empty
-        if (value.trim() !== '') {
-            const filtered = allHotels.filter(h =>
-                h.location.toLowerCase().includes(value.toLowerCase()) ||
-                h.title.toLowerCase().includes(value.toLowerCase())
-            );
-            setSuggestions(filtered);
-        } else {
-            setSuggestions([]);
-        }
-    };
+    fetchHotels();
+  }, []);
 
-    const handleSuggestionClick = (suggestion) => {
-        setSearchParams({ ...searchParams, location: suggestion.location });
-        setSuggestions([]);
-        // Filter and display hotels for this location
-        const filtered = allHotels.filter(h =>
-            h.location.toLowerCase() === suggestion.location.toLowerCase()
-        );
-        setHotels(filtered);
-    };
+  // Search submit
+  const handleSearch = (e) => {
+    e.preventDefault();
 
-    return (
-        <div className="hotels-page">
-            {/* Search Bar */}
-            <section className="search-container">
-                <form className="search-bar-upgraded" onSubmit={handleSearch}>
-                    <div className="search-field-upgraded" style={{ position: 'relative', flex: 1 }}>
-                        <div className="input-icon-wrapper">
-                            <i className="fa-solid fa-location-dot"></i>
-                            <input
-                                type="text"
-                                placeholder="Where are you going?"
-                                value={searchParams.location}
-                                onChange={handleInputChange}
-                                autoComplete="off"
-                            />
-                        </div>
-                        {suggestions.length > 0 && (
-                            <div className="search-suggestions">
-                                {suggestions.map((suggestion, index) => (
-                                    <div
-                                        key={index}
-                                        className="suggestion-item"
-                                        onClick={() => handleSuggestionClick(suggestion)}
-                                    >
-                                        <i className="fa-solid fa-map-pin"></i>
-                                        <span>{suggestion.location}</span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-
-                    <button type="submit" className="search-button-upgraded">
-                        <i className="fa-solid fa-magnifying-glass"></i> Search
-                    </button>
-                </form>
-            </section>
-
-            {/* Hotels Grid */}
-            <section className="destinations-section">
-                <div className="section-header">
-                    <h2>Available Hotels</h2>
-                    <p>Find Your Home Away From Home</p>
-                </div>
-
-                {loading ? (
-                    <div className="loading-state" style={{ textAlign: 'center', padding: '50px' }}>
-                        <i className="fa-solid fa-spinner fa-spin fa-2x"></i>
-                        <p>Loading hotels...</p>
-                    </div>
-                ) : hotels.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '50px' }}>
-                        <p>No hotels found. Please check back later!</p>
-                    </div>
-                ) : (
-                    <div className="destinations-grid">
-                        {hotels.map(hotel => (
-                            <div
-                                className="small-hotel-card"
-                                key={hotel.id}
-                                onClick={() => navigate(`/hotel/${hotel.id}`)}
-                            >
-                                <img src={hotel.image} alt={hotel.title} />
-                                <div className="info">
-                                    <h3>{hotel.title}</h3>
-                                    <p>{hotel.location}</p>
-                                    <div className="card-footer">
-                                        <span className="rating">⭐ {hotel.rating}</span>
-                                        <span className="price">Rs.{hotel.price}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-                {/* Pagination */}
-                {hotels.length > 0 && (
-                    <div className="pagination">
-                        <button disabled>&laquo;</button>
-                        <button className="active">1</button>
-                        <button>2</button>
-                        <button>3</button>
-                        <button>&raquo;</button>
-                    </div>
-                )}
-            </section>
-        </div>
+    const filtered = allHotels.filter((hotel) =>
+      hotel.location
+        .toLowerCase()
+        .includes(searchParams.location.toLowerCase())
     );
+
+    setHotels(filtered);
+    setSuggestions([]);
+  };
+
+  // Input change
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+
+    setSearchParams({ location: value });
+
+    if (value.trim() !== '') {
+      const filtered = allHotels.filter(
+        (h) =>
+          h.location.toLowerCase().includes(value.toLowerCase()) ||
+          h.title.toLowerCase().includes(value.toLowerCase())
+      );
+
+      setSuggestions(filtered);
+    } else {
+      setSuggestions([]);
+    }
+  };
+
+  const handleSuggestionClick = (hotel) => {
+    setSearchParams({ location: hotel.location });
+    setSuggestions([]);
+
+    const filtered = allHotels.filter(
+      (h) => h.location.toLowerCase() === hotel.location.toLowerCase()
+    );
+
+    setHotels(filtered);
+  };
+
+  return (
+    <div className="hotels-page">
+
+      {/* Search */}
+      <section className="search-container">
+        <form className="search-bar-upgraded" onSubmit={handleSearch}>
+          <div className="search-field-upgraded" style={{ position: 'relative', flex: 1 }}>
+            <div className="input-icon-wrapper">
+              <i className="fa-solid fa-location-dot"></i>
+
+              <input
+                type="text"
+                placeholder="Where are you going?"
+                value={searchParams.location}
+                onChange={handleInputChange}
+              />
+            </div>
+
+            {suggestions.length > 0 && (
+              <div className="search-suggestions">
+                {suggestions.map((s) => (
+                  <div
+                    key={s.id}
+                    className="suggestion-item"
+                    onClick={() => handleSuggestionClick(s)}
+                  >
+                    <i className="fa-solid fa-map-pin"></i>
+                    {s.location}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button className="search-button-upgraded">
+            <i className="fa-solid fa-magnifying-glass"></i> Search
+          </button>
+        </form>
+      </section>
+
+      {/* Hotel list */}
+      <section className="destinations-section">
+        <div className="section-header">
+          <h2>Available Hotels</h2>
+          <p>Find Your Home Away From Home</p>
+        </div>
+
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+            <i className="fa-solid fa-spinner fa-spin fa-2x"></i>
+            <p>Loading hotels...</p>
+          </div>
+        ) : hotels.length === 0 ? (
+          <p style={{ textAlign: 'center' }}>No hotels found</p>
+        ) : (
+          <div className="destinations-grid">
+            {hotels.map((hotel) => (
+              <HotelCard
+                key={hotel.id}
+                id={hotel.id}
+                title={hotel.title}
+                location={hotel.location}
+                price={hotel.price}
+                rating={hotel.rating}
+                image={hotel.image}
+              />
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  );
 };
 
 export default Hotels;

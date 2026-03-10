@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
+import HotelCard from '../components/HotelCard';
 
-// --- 1. IMPORT IMAGES FOR THE 4 REQUESTED HOTELS ---
+// --- 1. IMPORT ALL HOTEL IMAGES ---
 import CinnamonGrand from '../images/hotel_img/Cinnamon Grand Colombo.jpg';
 import ShangrilaColombo from '../images/hotel_img/Shangri-La Colombo.jpg';
 import JetwingBlue from '../images/hotel_img/JetwingBlue.jpg';
@@ -60,8 +61,8 @@ const Home = () => {
                     location: h.h_location,
                     price: h.base_price,
                     rating: 4.8,
-                    // Match the local image, fallback to placeholder if not found
-                    image: hotelImages[normalizeName(h.h_name)] || `https://via.placeholder.com/800x800?text=${encodeURIComponent(h.h_name)}`
+                    // Match the local image, fallback to CinnamonGrand if not found
+                    image: hotelImages[normalizeName(h.h_name)] 
                 }));
 
                 // If for some reason the database doesn't have all 4, we take what we have (up to 4)
@@ -174,21 +175,15 @@ const Home = () => {
                 ) : (
                     <div className="destinations-grid">
                         {featuredHotels.map(hotel => (
-                            <div
-                                className="small-hotel-card"
+                            <HotelCard
                                 key={hotel.id}
-                                onClick={() => navigate(`/hotel/${hotel.id}`)}
-                            >
-                                <img src={hotel.image} alt={hotel.title} />
-                                <div className="info">
-                                    <h3>{hotel.title}</h3>
-                                    <p>{hotel.location}</p>
-                                    <div className="card-footer">
-                                        <span className="rating">⭐ {hotel.rating}</span>
-                                        <span className="price">Rs.{hotel.price}</span>
-                                    </div>
-                                </div>
-                            </div>
+                                id={hotel.id}
+                                title={hotel.title}
+                                location={hotel.location}
+                                rating={hotel.rating}
+                                price={hotel.price}
+                                image={hotel.image}
+                            />
                         ))}
                     </div>
                 )}
