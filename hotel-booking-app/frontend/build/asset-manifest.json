@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/static/css/main.9dc2560d.css",
+    "main.js": "/static/js/main.4c0bac71.js",
+    "static/media/EarlsRegency.jpg": "/static/media/EarlsRegency.26b2d2e9a33a7b9cd039.jpg",
+    "static/media/GalleFace.jpeg": "/static/media/GalleFace.703470ad58f19208df46.jpeg",
+    "static/media/JetwingBlue.jpg": "/static/media/JetwingBlue.79000a8bd6fe21e9b6c0.jpg",
+    "static/media/Shangri-La Colombo.jpg": "/static/media/Shangri-La Colombo.2312af88c8bf4e0e56a3.jpg",
+    "static/media/Kingsbury.jpg": "/static/media/Kingsbury.34b2ae65ffec6a408f27.jpg",
+    "static/media/Ella98Acres.jpg": "/static/media/Ella98Acres.d3bc11fbe7463ce68822.jpg",
+    "static/media/Kandalama.jpg": "/static/media/Kandalama.bd8584097705139bc64a.jpg",
+    "static/media/AmariGalle.jpg": "/static/media/AmariGalle.9fb18f1fcd9ff2d98355.jpg",
+    "static/media/ShangriLaHambantota.jpg": "/static/media/ShangriLaHambantota.280202f23a2d8233ce38.jpg",
+    "static/media/Cinnamon Grand Colombo.jpg": "/static/media/Cinnamon Grand Colombo.92beb13928ae7b34cf92.jpg",
+    "static/media/CinnamonRed.jpg": "/static/media/CinnamonRed.bd0cb882758de5cb9142.jpg",
+    "index.html": "/index.html",
+    "main.9dc2560d.css.map": "/static/css/main.9dc2560d.css.map",
+    "main.4c0bac71.js.map": "/static/js/main.4c0bac71.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9dc2560d.css",
+    "static/js/main.4c0bac71.js"
+  ]
+}

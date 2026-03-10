@@ -1,0 +1,338 @@
+/* --- Variables (Matches App Theme) --- */
+:root {
+    --primary-color: #0066CC;
+    --secondary-color: #1A202C;
+    --primary-hover: #0052a3;
+    --text-dark: #1A202C;
+    --text-gray: #718096;
+    --bg-white: #F7F9FC;
+    --card-white: #FFFFFF;
+    --border-color: #E2E8F0;
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+    margin: 0;
+}
+
+/* --- Page Container --- */
+.hotels-page {
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+/* =========================================
+   SEARCH BAR (UPGRADED STYLE)
+   ========================================= */
+.search-container {
+    position: relative;
+    /* This negative margin pulls it UP to overlap the header */
+    margin-top: 120px;
+    margin-bottom: 60px;
+    padding: 0 20px;
+    /* Z-Index must be lower than the header (1000) so search bar goes under when scrolling */
+    z-index: 999;
+}
+
+.search-bar-upgraded {
+    max-width: 1100px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 8px;
+    border-radius: 100px;
+    /* Fully rounded pill shape */
+    display: flex;
+    align-items: center;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    /* Deep shadow for floating effect */
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.search-field-upgraded {
+    flex: 1;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.search-suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-top: none;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    max-height: 300px;
+    overflow-y: auto;
+    z-index: 1000;
+    margin-top: -5px;
+}
+
+.suggestion-item {
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:hover {
+    background-color: #f5f5f5;
+}
+
+.suggestion-item i {
+    color: #006ce4;
+    font-size: 0.9rem;
+}
+
+.suggestion-item span {
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.input-icon-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color: #666;
+}
+
+.input-icon-wrapper i {
+    margin-right: 15px;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+}
+
+.search-field-upgraded input {
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+    color: #333;
+    outline: none;
+    width: 100%;
+    font-weight: 500;
+}
+
+/* Vertical dividers between fields */
+.search-field-upgraded:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    height: 40%;
+    width: 1px;
+    background-color: #ddd;
+}
+
+.search-button-upgraded {
+    background: linear-gradient(135deg, #006ce4 0%, #003580 100%);
+    color: white;
+    padding: 18px 40px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-left: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 108, 228, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.search-button-upgraded:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 108, 228, 0.4);
+}
+
+/* =========================================
+   HOTELS GRID SECTION (4 Per Row)
+   ========================================= */
+.destinations-section {
+    max-width: 1400px;
+    margin: 0 auto 100px;
+    padding: 0 20px;
+}
+
+.section-header {
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.section-header p {
+    color: #666;
+    font-size: 1.2rem;
+}
+
+.destinations-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* 4 Columns */
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.small-hotel-card {
+    background: var(--card-white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.small-hotel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.small-hotel-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.small-hotel-card .info {
+    padding: 12px;
+}
+
+.small-hotel-card h3 {
+    font-size: 1.1rem;
+    margin: 0 0 5px 0;
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.small-hotel-card p {
+    margin: 0 0 10px 0;
+    color: var(--text-gray);
+    font-size: 0.9rem;
+}
+
+.small-hotel-card .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.small-hotel-card .rating {
+    font-size: 0.9rem;
+    color: #f39c12;
+}
+
+.small-hotel-card .price {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1rem;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--text-gray);
+}
+
+/* =========================================
+   PAGINATION
+   ========================================= */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 3rem;
+}
+
+.pagination button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border-color);
+    background: var(--card-white);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--text-dark);
+    transition: all 0.3s;
+}
+
+.pagination button:hover:not(:disabled) {
+    background-color: #E6F0FA;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.pagination button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 1200px) {
+    .destinations-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .search-bar-upgraded {
+        flex-direction: column;
+        border-radius: 20px;
+        padding: 20px;
+    }
+
+    .search-field-upgraded:not(:last-child)::after {
+        display: none;
+    }
+
+    .search-button-upgraded {
+        width: 100%;
+        justify-content: center;
+        margin: 10px 0 0 0;
+    }
+
+    .destinations-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .search-container {
+        margin-top: -30px;
+    }
+
+    .destinations-grid {
+        grid-template-columns: 1fr;
+    }
+}

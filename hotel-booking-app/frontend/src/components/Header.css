@@ -1,0 +1,192 @@
+/* --- Global Reset (Crucial for exact sizing) --- */
+* {
+    box-sizing: border-box;
+}
+
+/* --- Variables --- */
+:root {
+    --primary-color: #0066CC;
+    --primary-hover: #0052a3;
+    --secondary-color: #ffffff;
+    --text-light: #333333;
+    --accent-color: #004C99;
+}
+
+/* --- Header Base --- */
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: var(--secondary-color);
+    color: var(--text-light);
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    height: 80px;
+}
+
+/* --- Logo --- */
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+.logo i {
+    color: var(--primary-color);
+}
+
+/* --- Navigation Links --- */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-light);
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* --- Auth Buttons Container --- */
+.auth-buttons {
+    display: flex;
+    /* Forces buttons onto the same line */
+    align-items: center;
+    /* Vertically centers them */
+    gap: 10px;
+    /* Space between buttons */
+}
+
+/* --- Common Button Styles (IDENTICAL SIZE) --- */
+.header .btn-register,
+.header .btn-signin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* EXACT Same Size Controls */
+    padding: 0 24px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: normal;
+    height: 44px;
+    box-sizing: border-box;
+
+    text-decoration: none;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    margin: 0;
+}
+
+/* Register Button Style (Outline) */
+.header .btn-register {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.header .btn-register:hover {
+    background-color: rgba(0, 102, 204, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 102, 204, 0.1);
+}
+
+/* Sign In Button Style (Solid) */
+.header .btn-signin {
+    background-color: var(--primary-color);
+    color: white;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 4px 6px rgba(0, 102, 204, 0.2);
+}
+
+.header .btn-signin:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 102, 204, 0.3);
+}
+
+/* --- User Info & Logout Button --- */
+.user-name {
+    font-weight: 600;
+    color: var(--text-light);
+    margin-right: 15px;
+    font-size: 0.95rem;
+}
+
+.btn-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    height: 44px;
+    box-sizing: border-box;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #ff3333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(255, 77, 77, 0.2);
+}
+
+/* --- Header Entry Animation --- */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

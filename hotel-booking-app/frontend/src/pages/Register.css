@@ -1,0 +1,225 @@
+:root {
+    /* Booking App Color Palette */
+    --primary-blue: #0066CC;
+    --primary-hover: #0052a3;
+    --text-dark: #1A202C;
+    --text-gray: #718096;
+    --bg-white: #F7F9FC;
+    /* Very light grey-blue for page bg */
+    --card-white: #FFFFFF;
+    --border-color: #E2E8F0;
+    --error-color: #E53E3E;
+}
+
+/* --- Page Layout --- */
+.register-page {
+    min-height: 100vh;
+    background-color: var(--bg-white);
+    /* Clean light background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Container to control the size (Made Bigger) */
+.register-container {
+    width: 100%;
+    max-width: 520px;
+}
+
+/* --- Card Styling --- */
+.register-card {
+    background: var(--card-white);
+    padding: 3.5rem 3rem;
+    /* Increased padding for bigger box */
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    /* Soft shadow */
+    border: 1px solid var(--border-color);
+    animation: fadeIn 0.8s ease-out;
+}
+
+/* --- Header (Centered) --- */
+.register-header {
+    display: flex;
+    flex-direction: column;
+    /* Stacks title and subtitle vertically */
+    align-items: center;
+    /* Centers them horizontally */
+    justify-content: center;
+    text-align: center;
+    /* Centers the text inside the elements */
+    margin-bottom: 2.5rem;
+    width: 100%;
+}
+
+.register-title {
+    color: var(--primary-blue);
+    font-size: 2.2rem;
+    /* Large, bold title */
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    /* Space between title and subtitle */
+    letter-spacing: -0.5px;
+}
+
+.register-subtitle {
+    color: var(--text-gray);
+    font-size: 1.05rem;
+    font-weight: 400;
+    max-width: 85%;
+    /* Keeps the subtitle from getting too wide */
+    line-height: 1.5;
+}
+
+/* --- Floating Input Fields --- */
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 16px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background: transparent;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.form-group label {
+    position: absolute;
+    left: 16px;
+    top: 16px;
+    color: var(--text-gray);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background-color: var(--card-white);
+    padding: 0 4px;
+}
+
+/* Focus & Active States (Floating Label Animation) */
+.form-group input:focus,
+.form-group input:not(:placeholder-shown) {
+    border-color: var(--primary-blue);
+}
+
+.form-group input:focus~label,
+.form-group input:not(:placeholder-shown)~label {
+    top: -10px;
+    left: 12px;
+    font-size: 0.8rem;
+    color: var(--primary-blue);
+    font-weight: 600;
+}
+
+/* --- Button --- */
+.btn-register {
+    width: 100%;
+    padding: 16px;
+    background-color: var(--primary-blue);
+    color: white;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px;
+}
+
+.btn-register:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+}
+
+.btn-register:active {
+    transform: translateY(0);
+}
+
+.btn-register:disabled {
+    background-color: #cbd5e0;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* --- Footer Link --- */
+.login-link {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-gray);
+}
+
+.login-link a {
+    color: var(--primary-blue);
+    text-decoration: none;
+    font-weight: 700;
+    margin-left: 5px;
+    transition: text-decoration 0.2s;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+/* --- Animations --- */
+
+/* 1. Fade In on Load */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 2. Shake on Error */
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: translateX(-5px);
+    }
+
+    20%,
+    40%,
+    60%,
+    80% {
+        transform: translateX(5px);
+    }
+}
+
+.shake {
+    animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+    border: 2px solid var(--error-color) !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .register-card {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .register-title {
+        font-size: 1.75rem;
+    }
+}
