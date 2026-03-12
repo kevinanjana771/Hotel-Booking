@@ -9,10 +9,11 @@ const Header = () => {
     useEffect(() => {
         // 1. Check for the specific 'userName' key we set in Login.jsx
         const storedName = localStorage.getItem('userName');
-
+        const storedRole = localStorage.getItem('userRole');
+        
         if (storedName) {
             // Set the user state so the UI (Welcome, {user.u_name}) works
-            setUser({ u_name: storedName });
+            setUser({ u_name: storedName, u_role: storedRole });
         } else {
             // 2. Fallback: check if there is a generic 'user' object
             const storedUser = localStorage.getItem('user');
@@ -28,6 +29,7 @@ const Header = () => {
         localStorage.removeItem('userId');
         localStorage.removeItem('userName');
         localStorage.removeItem('userEmail');
+        localStorage.removeItem('userRole');
 
         setUser(null);
         alert("Logged out successfully!");
@@ -48,10 +50,12 @@ const Header = () => {
                         <i className="fa-solid fa-location-dot"></i> Destinations
                     </Link>
 
-                    {/* UPDATED: Single link to the unified Manager Dashboard */}
-                    <Link to="/admin">
-                        <i className="fa-solid fa-briefcase"></i> Manager Dashboard
-                    </Link>
+                    {/* Show only for admin */}
+                    {user && user.u_role === 'admin' && (
+                        <Link to="/admin">
+                            <i className="fa-solid fa-briefcase"></i> Admin Dashboard
+                        </Link>
+                    )}
 
                     <Link to="/contact"><i className="fa-solid fa-envelope"></i> Contact</Link>
                 </nav>

@@ -54,6 +54,7 @@ const Login = () => {
                 localStorage.setItem('userId', userData.u_id || userData.id);
                 localStorage.setItem('userName', userData.u_name || userData.name);
                 localStorage.setItem('userEmail', userData.u_email || userData.email);
+                localStorage.setItem('userRole', userData.u_role || 'customer');
             }
 
             alert("Login Successful!");

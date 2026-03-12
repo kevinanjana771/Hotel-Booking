@@ -13,12 +13,12 @@ exports.register = async (req, res) => {
 
         // 2. Insert into database using exact column names
         const query = `
-            INSERT INTO users (u_name, u_email, u_pass_word) 
-            VALUES ($1, $2, $3) 
+            INSERT INTO users (u_name, u_email, u_pass_word, u_role) 
+            VALUES ($1, $2, $3, $4) 
             RETURNING u_id
         `;
 
-        const values = [u_name, u_email, hashedPassword];
+        const values = [u_name, u_email, hashedPassword, 'customer'];
 
         const result = await db.query(query, values);
 
@@ -73,7 +73,8 @@ exports.login = async (req, res) => {
             user: {
                 u_id: user.u_id,
                 u_name: user.u_name,
-                u_email: user.u_email
+                u_email: user.u_email,
+                u_role: user.u_role
             }
         });
 
