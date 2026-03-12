@@ -41,7 +41,7 @@ const Home = () => {
         const fetchFeaturedHotels = async () => {
             try {
                 setLoading(true);
-                const response = await axios.get('http://localhost:5001/api/manager/hotels');
+                const response = await axios.get('/api/manager/hotels');
 
                 // --- 3. LOGIC TO GET SPECIFIC 4 HOTELS ---
                 const targetHotels = [

@@ -38,17 +38,23 @@ process.on('uncaughtException', (error) => {
 // Start Server - verify DB connection first
 const PORT = process.env.PORT || 5001;
 
-db.query('SELECT 1')
-    .then(() => {
-        console.log('✅ Database connected successfully');
-        app.listen(PORT, () => {
-            console.log(`✅ Server running on port ${PORT}`);
+// Export the app for Vercel
+module.exports = app;
+
+// Only listen if not running in a serverless environment
+if (process.env.NODE_ENV !== 'production') {
+    db.query('SELECT 1')
+        .then(() => {
+            console.log('✅ Database connected successfully');
+            app.listen(PORT, () => {
+                console.log(`✅ Server running on port ${PORT}`);
+            });
+        })
+        .catch((err) => {
+            console.error('❌ Database connection failed:', err.message);
+            console.log('⚠️  Starting server anyway (DB queries will fail)...');
+            app.listen(PORT, () => {
+                console.log(`⚠️ Server running on port ${PORT} (without DB)`);
+            });
         });
-    })
-    .catch((err) => {
-        console.error('❌ Database connection failed:', err.message);
-        console.log('⚠️  Starting server anyway (DB queries will fail)...');
-        app.listen(PORT, () => {
-            console.log(`⚠️ Server running on port ${PORT} (without DB)`);
-        });
-    });
+}

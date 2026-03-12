@@ -34,8 +34,8 @@ const ManagerDashboard = () => {
         try {
             setLoading(true);
             const [hotelsRes, bookingsRes] = await Promise.all([
-                axios.get('http://localhost:5001/api/manager/hotels'),
-                axios.get('http://localhost:5001/api/manager/bookings')
+                axios.get('/api/manager/hotels'),
+                axios.get('/api/manager/bookings')
             ]);
 
             // MAP DATA: Updated to match new DB columns
@@ -78,7 +78,7 @@ const ManagerDashboard = () => {
             // Initialize pricing form preserving currently selected hotel if it still exists
             if (mappedHotels.length > 0) {
                 setPricingData(prev => {
-                    const exists = mappedHotels.find(h => h.id == prev.hotelId);
+                    const exists = mappedHotels.find(h => String(h.id) === String(prev.hotelId));
                     const selHotel = exists || mappedHotels[0];
                     return {
                         hotelId: selHotel.id,
@@ -103,7 +103,7 @@ const ManagerDashboard = () => {
     const handleAddHotel = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5001/api/manager/hotels', {
+            await axios.post('/api/manager/hotels', {
                 name: newHotel.name,
                 location: newHotel.location,
                 basePrice: newHotel.basePrice,
@@ -120,7 +120,7 @@ const ManagerDashboard = () => {
 
     // 3. Handle Hotel Selection for Pricing (UPDATED LOGIC)
     const handleHotelSelect = (id, hotelsList = hotels) => {
-        const hotel = hotelsList.find(h => h.id == id);
+        const hotel = hotelsList.find(h => String(h.id) === String(id));
         if (hotel && hotel.pricing) {
             setPricingData({
                 hotelId: hotel.id,
@@ -137,7 +137,7 @@ const ManagerDashboard = () => {
     // 4. Handle Save Pricing (UPDATED KEYS)
     const handleSavePricing = async () => {
         try {
-            await axios.put('http://localhost:5001/api/manager/pricing', {
+            await axios.put('/api/manager/pricing', {
                 hotelId: pricingData.hotelId,
                 standard: pricingData.standard,
                 deluxe: pricingData.deluxe,
@@ -342,8 +342,8 @@ const ManagePricing = ({ hotels, pricingData, setPricingData, onSelectHotel, onS
                         </select>
                     </div>
                     <div className="selector-info">
-                        <p><strong>Location:</strong> {hotels.find(h => h.id == pricingData.hotelId)?.location}</p>
-                        <p><strong>Current Base:</strong> Rs.{hotels.find(h => h.id == pricingData.hotelId)?.basePrice}</p>
+                        <p><strong>Location:</strong> {hotels.find(h => String(h.id) === String(pricingData.hotelId))?.location}</p>
+                        <p><strong>Current Base:</strong> Rs.{hotels.find(h => String(h.id) === String(pricingData.hotelId))?.basePrice}</p>
                     </div>
                 </div>
 

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './Header.css';
 
 const Header = () => {
     const [user, setUser] = useState(null);
-    const navigate = useNavigate();
+
 
     useEffect(() => {
         // 1. Check for the specific 'userName' key we set in Login.jsx
@@ -31,8 +31,9 @@ const Header = () => {
 
         setUser(null);
         alert("Logged out successfully!");
-        navigate('/login');
+        window.location.href = '/login';
     };
+
 
     return (
         <header className="header">

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
 
 const Login = () => {
 
-    const navigate = useNavigate();
+
 
     const [formData, setFormData] = useState({
         email: '',
@@ -36,7 +36,7 @@ const Login = () => {
 
             // Send data matching PostgreSQL columns
             const response = await axios.post(
-                'http://localhost:5001/api/auth/login',
+                '/api/auth/login',
                 {
                     u_email: formData.email,
                     u_pass_word: formData.password
@@ -57,8 +57,10 @@ const Login = () => {
             }
 
             alert("Login Successful!");
+            
+            // Forces a full page reload so the Header component updates correctly
+            window.location.href = '/';
 
-            navigate('/');
 
         } catch (error) {
 

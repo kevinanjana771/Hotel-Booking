@@ -37,7 +37,7 @@ const Booking = () => {
         const fetchHotelDetails = async () => {
             if (!hotelId) return;
             try {
-                const res = await axios.get(`http://localhost:5001/api/manager/hotels/${hotelId}`);
+                const res = await axios.get(`/api/manager/hotels/${hotelId}`);
                 if (res.data) {
                     setHotelPricing(res.data);
                 } else {
@@ -106,7 +106,7 @@ const Booking = () => {
         }
 
         try {
-            await axios.post('http://localhost:5001/api/bookings', {
+            await axios.post('/api/bookings', {
                 userId: userId,
                 hotelId: hotelId,
                 guestName: userName,

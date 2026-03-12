@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import {  } from 'react-router-dom';
+
 import HotelCard from '../components/HotelCard';
 import './Hotels.css';
 
@@ -33,7 +34,7 @@ const hotelImages = {
 };
 
 const Hotels = () => {
-  const navigate = useNavigate();
+
 
   const [searchParams, setSearchParams] = useState({
     location: ''
@@ -51,7 +52,7 @@ const Hotels = () => {
         setLoading(true);
 
         const response = await axios.get(
-          'http://localhost:5001/api/manager/hotels'
+          '/api/manager/hotels'
         );
 
         const mappedHotels = response.data.map((h) => ({
