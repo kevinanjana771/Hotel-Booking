@@ -14,15 +14,13 @@ A full-stack hotel booking application built with React, Node.js, and Supabase.
 - **Frontend**: React, Vite, Vanilla CSS
 - **Backend**: Node.js, Express
 - **Database**: Supabase (PostgreSQL)
-- **Authentication**: (mention if applicable, but likely Supabase Auth)
 
 ## 📦 Project Structure
 
 ```bash
 Hotel booking/
-├── hotel-booking-app/
-│   ├── frontend/         # React frontend
-│   └── backend/          # Node.js Express backend
+├── frontend/         # React frontend
+└── backend/          # Node.js Express backend
 ```
 
 ## ⚙️ Setup Instructions
@@ -36,15 +34,16 @@ Hotel booking/
 
 1. Navigate to the backend directory:
    ```bash
-   cd hotel-booking-app/backend
+   cd backend
    ```
 2. Install dependencies:
    ```bash
    npm install
    ```
-3. Create a `.env` file and add your database credentials:
+3. Create a `.env` file and add your database credentials (check `config/db.js` for requirements):
    ```env
-   DATABASE_URL=your_supabase_url
+   PORT=5001
+   DATABASE_URL=your_supabase_connection_string
    ```
 4. Start the server:
    ```bash
@@ -55,7 +54,7 @@ Hotel booking/
 
 1. Navigate to the frontend directory:
    ```bash
-   cd hotel-booking-app/frontend
+   cd frontend
    ```
 2. Install dependencies:
    ```bash

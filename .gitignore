@@ -9,9 +9,14 @@ coverage/
 # Production
 build/
 dist/
+*.exe
+*.dll
+*.so
+*.dylib
 
 # Misc
 .DS_Store
+Thumbs.db
 *.pem
 
 # Debug
@@ -25,6 +30,7 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.env*.local
 
 # Editor directories and files
 .vscode/
@@ -34,3 +40,9 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+.eslintcache
+
+# Project specific
+backend/.env
+frontend/build/
+frontend/dist/
