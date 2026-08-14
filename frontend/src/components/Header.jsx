@@ -50,8 +50,8 @@ const Header = () => {
                         <i className="fa-solid fa-location-dot"></i> Destinations
                     </Link>
 
-                    {/* Show only for admin */}
-                    {user && user.u_role === 'admin' && (
+                    {/* Show for admin or manager */}
+                    {user && (user.u_role === 'admin' || user.u_role === 'manager') && (
                         <Link to="/admin">
                             <i className="fa-solid fa-briefcase"></i> Admin Dashboard
                         </Link>
