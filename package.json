@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "cd frontend && npm install && npm run build",
-    "start": "node backend/server.js"
+    "start": "node api/index.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
