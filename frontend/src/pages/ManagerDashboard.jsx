@@ -155,15 +155,61 @@ const ManagerDashboard = () => {
         }
     };
 
+    const downloadExcel = () => {
+        const headers = [
+            "Booking ID",
+            "Guest Name",
+            "Hotel",
+            "Room Type",
+            "Meal Plan",
+            "Guests",
+            "Check-In Date",
+            "Check-Out Date",
+            "Total Price (Rs.)",
+            "Payment Method",
+            "Status",
+            "Booked On"
+        ];
+
+        const csvRows = [headers.join(",")];
+
+        bookings.forEach(b => {
+            const values = [
+                b.id,
+                `"${(b.guest || '').replace(/"/g, '""')}"`,
+                `"${(b.hotel || '').replace(/"/g, '""')}"`,
+                `"${(b.room || '').replace(/"/g, '""')}"`,
+                `"${(b.meal || '').replace(/"/g, '""')}"`,
+                b.guests,
+                b.checkIn,
+                b.checkOut,
+                b.total,
+                b.paymentMethod === 'pay_at_hotel' ? 'Pay at Hotel' : 'Paid Online',
+                b.status,
+                b.createdAt ? new Date(b.createdAt).toLocaleString() : ''
+            ];
+            csvRows.push(values.join(","));
+        });
+
+        const blob = new Blob(["\uFEFF" + csvRows.join("\r\n")], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `bookings_report_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     if (loading) return <div style={{ padding: '100px', textAlign: 'center' }}>Loading Dashboard...</div>;
 
     const renderContent = () => {
         switch (activeTab) {
-            case 'dashboard': return <DashboardOverview bookings={bookings} />;
+            case 'dashboard': return <DashboardOverview bookings={bookings} onDownloadExcel={downloadExcel} />;
             case 'hotels': return <ManageHotels hotels={hotels} setHotels={setHotels} newHotel={newHotel} setNewHotel={setNewHotel} onAddHotel={handleAddHotel} />;
             case 'pricing': return <ManagePricing hotels={hotels} pricingData={pricingData} setPricingData={setPricingData} onSelectHotel={handleHotelSelect} onSave={handleSavePricing} />;
-            case 'bookings': return <ManageBookings bookings={bookings} />;
-            default: return <DashboardOverview bookings={bookings} />;
+            case 'bookings': return <ManageBookings bookings={bookings} onDownloadExcel={downloadExcel} />;
+            default: return <DashboardOverview bookings={bookings} onDownloadExcel={downloadExcel} />;
         }
     };
 
@@ -198,13 +244,33 @@ const ManagerDashboard = () => {
 };
 
 // --- 1. Dashboard Overview ---
-const DashboardOverview = ({ bookings }) => {
+const DashboardOverview = ({ bookings, onDownloadExcel }) => {
     const activeCount = bookings.filter(b => b.status === 'Confirmed').length;
     const payAtHotelCount = bookings.filter(b => b.paymentMethod === 'pay_at_hotel').length;
     const onlinePaidCount = bookings.filter(b => b.paymentMethod === 'credit_card').length;
     return (
         <>
-            <h2>Dashboard Overview</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '15px' }}>
+                <h2 style={{ margin: 0 }}>Dashboard Overview</h2>
+                <button 
+                    onClick={onDownloadExcel} 
+                    className="filter-btn export-btn" 
+                    style={{ 
+                        backgroundColor: '#2e7d32', 
+                        color: 'white', 
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        fontWeight: 'bold',
+                        border: 'none',
+                        padding: '10px 20px',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                    }}
+                >
+                    <i className="fa-solid fa-file-excel"></i> Export All Bookings to Excel
+                </button>
+            </div>
             <div className="stats-container-large">
                 <div className="stat-card-large">
                     <div className="icon-bg-large"><i className="fa-solid fa-calendar-check"></i></div>
@@ -420,55 +486,8 @@ const ManagePricing = ({ hotels, pricingData, setPricingData, onSelectHotel, onS
 };
 
 // --- 4. Booking Confirmations ---
-const ManageBookings = ({ bookings }) => {
+const ManageBookings = ({ bookings, onDownloadExcel }) => {
     const [filter, setFilter] = useState('all');
-
-    const downloadExcel = () => {
-        const headers = [
-            "Booking ID",
-            "Guest Name",
-            "Hotel",
-            "Room Type",
-            "Meal Plan",
-            "Guests",
-            "Check-In Date",
-            "Check-Out Date",
-            "Total Price (Rs.)",
-            "Payment Method",
-            "Status",
-            "Booked On"
-        ];
-
-        const csvRows = [headers.join(",")];
-
-        bookings.forEach(b => {
-            const values = [
-                b.id,
-                `"${(b.guest || '').replace(/"/g, '""')}"`,
-                `"${(b.hotel || '').replace(/"/g, '""')}"`,
-                `"${(b.room || '').replace(/"/g, '""')}"`,
-                `"${(b.meal || '').replace(/"/g, '""')}"`,
-                b.guests,
-                b.checkIn,
-                b.checkOut,
-                b.total,
-                b.paymentMethod === 'pay_at_hotel' ? 'Pay at Hotel' : 'Paid Online',
-                b.status,
-                b.createdAt ? new Date(b.createdAt).toLocaleString() : ''
-            ];
-            csvRows.push(values.join(","));
-        });
-
-        // Add UTF-8 Byte Order Mark (BOM) to make Excel open it with correct encoding
-        const blob = new Blob(["\uFEFF" + csvRows.join("\r\n")], { type: "text/csv;charset=utf-8;" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", `bookings_report_${new Date().toISOString().split('T')[0]}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
 
     const filteredBookings = bookings.filter(b => {
         if (filter === 'all') return true;
@@ -491,7 +510,7 @@ const ManageBookings = ({ bookings }) => {
                     <button className={`filter-btn ${filter === 'credit_card' ? 'active' : ''}`} onClick={() => setFilter('credit_card')}>💳 Paid Online</button>
                     
                     <button 
-                        onClick={downloadExcel} 
+                        onClick={onDownloadExcel} 
                         className="filter-btn export-btn" 
                         style={{ 
                             backgroundColor: '#2e7d32', 
